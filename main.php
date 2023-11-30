@@ -4,7 +4,7 @@
  * Plugin Name:       WP Rocket Activ@tor
  * Plugin URI:        https://bit.ly/rkt-act
  * Description:       WP Rocket Plugin Activ@tor
- * Version:           1.2.0
+ * Version:           1.2.1
  * Requires at least: 5.9.0
  * Requires PHP:      7.2
  * Author:            moh@medhk2
@@ -40,6 +40,7 @@ if ( ! in_array( 'rocket_activation_notice', $rocket_boxes, true ) ) {
 add_action( 'plugins_loaded', function () use ( $consumer_email ) {
 	update_rocket_option( 'secret_key', hash( 'crc32', $consumer_email ) );
 	update_rocket_option( 'analytics_enabled', 0 );
+	update_option( 'rocket_analytics_notice_displayed', 1 );
 }, 99 );
 
 use WP_Rocket\Engine\License\API\UserClient;
