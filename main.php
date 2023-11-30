@@ -1,31 +1,29 @@
 <?php
-
 /**
  * @wordpress-plugin
- * Plugin Name:       WP Rocket Activator
- * Plugin URI:        https://github.com/wp-activators/wp-rocket-activator
- * Description:       WP Rocket Plugin Activator
- * Version:           1.1.0
+ * Plugin Name:       WP Rocket Activ@tor
+ * Plugin URI:        https://bit.ly/rkt-act
+ * Description:       WP Rocket Plugin Activ@tor
+ * Version:           1.2.0
  * Requires at least: 5.9.0
  * Requires PHP:      7.2
- * Author:            mohamedhk2
- * Author URI:        https://github.com/mohamedhk2
+ * Author:            moh@medhk2
+ * Author URI:        https://bit.ly/medhk2
  **/
 
 defined( 'ABSPATH' ) || exit;
-$WP_ROCKET_ACTIVATOR_NAME   = 'WP Rocket Activator';
-$WP_ROCKET_ACTIVATOR_DOMAIN = 'wp-rocket-activator';
-$functions                  = require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
-extract( $functions );
+$PLUGIN_NAME   = 'WP Rocket Activ@tor';
+$PLUGIN_DOMAIN = 'wp-rocket-activ@tor';
+extract( require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php' );
 if (
-	$activator_admin_notice_ignored()
-	|| $activator_admin_notice_plugin_install( 'wp-rocket/wp-rocket.php', null, 'WP Rocket', $WP_ROCKET_ACTIVATOR_NAME, $WP_ROCKET_ACTIVATOR_DOMAIN )
-	|| $activator_admin_notice_plugin_activate( 'wp-rocket/wp-rocket.php', $WP_ROCKET_ACTIVATOR_NAME, $WP_ROCKET_ACTIVATOR_DOMAIN )
+	$admin_notice_ignored()
+	|| $admin_notice_plugin_install( 'wp-rocket/wp-rocket.php', null, 'WP Rocket', $PLUGIN_NAME, $PLUGIN_DOMAIN )
+	|| $admin_notice_plugin_activate( 'wp-rocket/wp-rocket.php', $PLUGIN_NAME, $PLUGIN_DOMAIN )
 ) {
 	return;
 }
 define( 'WP_ROCKET_KEY', 'free4all' );
-define( 'WP_ROCKET_EMAIL', $consumer_email = 'free4all@wp-activators.github' );
+define( 'WP_ROCKET_EMAIL', $consumer_email = 'free4all@wp-activ-ators.github' );
 set_transient( 'wp_rocket_customer_data', $wp_rocket_customer_data = (object) [
 	'licence_account'     => '-1',
 	'license_type'        => 'Infinite',
@@ -46,13 +44,13 @@ add_action( 'plugins_loaded', function () use ( $consumer_email ) {
 
 use WP_Rocket\Engine\License\API\UserClient;
 
-add_filter( 'pre_http_request', function ( $pre, $parsed_args, $url ) use ( $wp_rocket_customer_data, $activator_json_response ) {
+add_filter( 'pre_http_request', function ( $pre, $parsed_args, $url ) use ( $wp_rocket_customer_data, $json_response ) {
 	switch ( $url ) {
 		case UserClient::USER_ENDPOINT:
-			return $activator_json_response( $wp_rocket_customer_data );
+			return $json_response( $wp_rocket_customer_data );
 		case WP_ROCKET_WEB_API . 'pause-licence.php':
 		case WP_ROCKET_WEB_API . 'activate-licence.php':
-			return $activator_json_response( [] );
+			return $json_response( [] );
 
 	}
 
